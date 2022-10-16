@@ -1,20 +1,20 @@
 import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { getClients } from '../../../store/clients/clientsSlice';
 import { Avatar, Button, Checkbox, FormControlLabel, InputLabel, TextField } from '@mui/material';
-import Adress from '../../Adress/Adress';
+import Adress from '../../Adress/Adress'
+import { useNavigate } from 'react-router-dom';
+import { paths } from '../../../paths';
+import { createClient } from '../../../store/client/clientSlice';
 
 function Copyright(props) {
   return (
@@ -33,24 +33,52 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
 
+  const [isCar, setIsCar] = React.useState(true)
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { clients, isLoading } = useSelector(state => state.clients);
 
   React.useEffect(() => {
     dispatch(getClients());
-  }, [dispatch]);
+  }, [dispatch, isCar]);
 
 
-  const handleSubmit = (event) => {
+  const handleCreateClient = React.useCallback((event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const formData = {
       clientName: data.get('clientName'),
-      email: data.get('email'),
+      street: data.get('street'),
+      house: data.get('house'),
+      apartment: data.get('apartment'),
+      isCar: isCar,
+      carPlateNumber: data.get('carPlateNumber'),
+      deposit: data.get('deposit'),
+    };
+    dispatch(createClient(formData)).then((res) => {
+      if (!res.error) {
+        navigate(`${paths.client}/${res.payload.id}`, { replace: true });
+      }
     });
-  };
+  }, [dispatch]);
 
-  const [isCar, setIsCar] = React.useState(true)
+  // const handleCreateClient = useCallback(() => {
+  //   const formData = new FormData();
+  //   formData.append('clientName', clientName);
+  //   formData.append('street', street);
+  //   formData.append('house', house);
+  //   formData.append('apartment', apartment);
+  //   formData.append('isCar', isCar);
+  //   formData.append('carPlateNumber', carPlateNumber);
+  //   formData.append('deposit', deposit);
+
+  //   dispatch(createClient(formData)).then((res) => {
+  //     if (!res.error) {
+  //       navigate(`${paths.client}/${res.payload._id}`, { replace: true });
+  //     }
+  //   });
+  // }, [clientName, street, house, apartment, isCar, carPlateNumber, deposit]);
+
   const handleIsCar = (event) => {
     setIsCar(!isCar)
   }
@@ -88,7 +116,7 @@ function DashboardContent() {
                 <Typography component="h1" variant="h5">
                   Створити користувача
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleCreateClient} noValidate sx={{ mt: 1 }}>
                   <TextField
                     margin="normal"
                     required
@@ -101,7 +129,6 @@ function DashboardContent() {
                   />
 
                   <Adress />
-
                   <div>
                     <FormControlLabel
                       control={
@@ -114,7 +141,6 @@ function DashboardContent() {
                       }
                       label="Наявнiсть авто"
                     />
-
                     {
                       isCar && <TextField
                         margin="normal"
@@ -125,19 +151,8 @@ function DashboardContent() {
                         id="carPlateNumber"
                       />
                     }
-
-
                   </div>
 
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
                   <TextField
                     margin="normal"
                     required

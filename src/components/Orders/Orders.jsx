@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from '../Title/Title';
+import { Link as RouterLink } from 'react-router-dom';
+import { paths } from '../../paths';
 
 // Generate Order Data
 // function createData(
@@ -45,7 +47,9 @@ export default function Orders({ clients }) {
         <TableBody>
           {clients.map((client) => (
             <TableRow key={client.id}>
-              <TableCell>{client.clientName}</TableCell>
+              <RouterLink to={`${paths.client}/${client.id}`}>
+                <TableCell>{client.clientName}</TableCell>
+              </RouterLink>
               <TableCell>{`${client.street} ${client.house}, кв.${client.apartment}`}</TableCell>
               <TableCell>{client.phoneNumber}</TableCell>
               <TableCell>{client.carPlateNumber ? client.carPlateNumber : '-'}</TableCell>

@@ -36,15 +36,16 @@ export default function Adress() {
             label="Вулиця"
             onChange={handleStreetChange}
           >
-            <MenuItem value={10}>Жулянська</MenuItem>
-            <MenuItem value={20}>Щастя</MenuItem>
+            <MenuItem value={'Жулянська'}>Жулянська</MenuItem>
+            <MenuItem value={'Щастя'}>Щастя</MenuItem>
           </Select>
         </FormControl>
 
         <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel id="home">Будинок</InputLabel>
+          <InputLabel id="house">Будинок</InputLabel>
           <Select
-            labelId="home"
+            labelId="house"
+            name="house"
             value={house}
             onChange={handleHouseChange}
             label="Будинок"

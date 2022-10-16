@@ -38,7 +38,7 @@ const clientSlice = createSlice({
       })
       .addCase(getClient.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.client = action.payload[0];
+        state.client = action.payload;
       })
       .addCase(getClient.rejected, (state, action) => {
         state.isError = true;
