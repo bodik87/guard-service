@@ -18,10 +18,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../../ListItems/ListItems';
-import Orders from '../../Orders/Orders';
 import { useDispatch, useSelector } from 'react-redux';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { getClients } from '../../../store/clients/clientsSlice';
-import { CircularProgress } from '@mui/material';
+import { Avatar, Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -93,6 +93,19 @@ function DashboardContent() {
     dispatch(getClients());
   }, [dispatch]);
 
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+  };
+
+
+
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -102,6 +115,8 @@ function DashboardContent() {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
+
+        {/*Topbar*/}
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
@@ -136,6 +151,8 @@ function DashboardContent() {
             </IconButton>
           </Toolbar>
         </AppBar>
+
+        {/*Sidebar*/}
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -156,6 +173,7 @@ function DashboardContent() {
             {secondaryListItems}
           </List>
         </Drawer>
+
         <Box
           component="main"
           sx={{
@@ -172,9 +190,57 @@ function DashboardContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                {isLoading ? <CircularProgress /> : <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  {clients && <Orders clients={clients} />}
-                </Paper>}
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <Box
+                    sx={{
+                      marginTop: 8,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+                      <PersonAddIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                      Створити користувача
+                    </Typography>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                      <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                      />
+                      <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                      />
+                      <FormControlLabel
+                        control={<Checkbox value="isCar" color="primary" />}
+                        label="Наявнiсть авто"
+                      />
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                      >
+                        Sign In
+                      </Button>
+                    </Box>
+                  </Box>
+                </Paper>
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
@@ -185,6 +251,6 @@ function DashboardContent() {
   );
 }
 
-export default function HomePage() {
+export default function CreateClient() {
   return <DashboardContent />;
 }

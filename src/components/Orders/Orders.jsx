@@ -14,22 +14,6 @@ import Title from '../Title/Title';
 //   return { id, date, name, shipTo, paymentMethod, amount };
 // }
 
-// const clients = [
-//   {
-//     "clientName": "Шулика Татьяна Ивановна",
-//     "street": "Жулянська",
-//     "house": "2в",
-//     "apartment": "155",
-//     "isCar": "false",
-//     "carPlateNumber": "",
-//     "phoneNumber": "380672785349",
-//     "deposit": "100",
-//     "id": "1"
-//   }
-// ];
-
-
-
 function preventDefault(event) {
   event.preventDefault();
 }
