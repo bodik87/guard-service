@@ -10,7 +10,7 @@ import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { getClients } from '../../../store/clients/clientsSlice';
-import { Avatar, Button, Checkbox, FormControlLabel, InputLabel, TextField } from '@mui/material';
+import { Avatar, Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import Adress from '../../Adress/Adress'
 import { useNavigate } from 'react-router-dom';
 import { paths } from '../../../paths';
