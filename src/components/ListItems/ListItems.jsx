@@ -28,7 +28,7 @@ export const mainListItems = (
         <ListItemIcon>
           <PersonIcon />
         </ListItemIcon>
-        <ListItemText disableTypography={true} primary="Створити" />
+        <ListItemText disableTypography={true} primary="Створити користувача" />
       </ListItemButton>
     </Link>
 
