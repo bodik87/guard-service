@@ -6,7 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from '../Title/Title';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { paths } from '../../paths';
 
 // Generate Order Data
@@ -16,11 +16,11 @@ import { paths } from '../../paths';
 //   return { id, date, name, shipTo, paymentMethod, amount };
 // }
 
-function preventDefault(event) {
-  event.preventDefault();
-}
-
 export default function Orders({ clients }) {
+  function preventDefault(event) {
+    event.preventDefault();
+  }
+  const navigate = useNavigate();
 
   const deposites = clients.map(client => client.deposit);
 
@@ -46,10 +46,12 @@ export default function Orders({ clients }) {
         </TableHead>
         <TableBody>
           {clients.map((client) => (
-            <TableRow key={client.id}>
-              <RouterLink to={`${paths.client}/${client.id}`}>
-                <TableCell>{client.clientName}</TableCell>
-              </RouterLink>
+            <TableRow
+              key={client.id}
+              style={{ cursor: 'pointer' }}
+              onClick={() => navigate(`${paths.client}/${client.id}`)}
+            >
+              <TableCell>{client.clientName}</TableCell>
               <TableCell>{`${client.street} ${client.house}, кв.${client.apartment}`}</TableCell>
               <TableCell>{client.phoneNumber}</TableCell>
               <TableCell>{client.carPlateNumber ? client.carPlateNumber : '-'}</TableCell>
@@ -58,9 +60,9 @@ export default function Orders({ clients }) {
           ))}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+      {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
         Link
-      </Link>
+      </Link> */}
     </React.Fragment>
   );
 }

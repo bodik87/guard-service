@@ -27,9 +27,12 @@ const clientSlice = createSlice({
     errors: null
   },
   reducers: { // экшн для обнудения ошибок
-    resetPlaneErrors: (state) => {
+    resetClientErrors: (state) => {
       state.errors = null;
-    }
+    },
+    resetClientPage: (state) => {
+      state.client = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,5 +65,5 @@ const clientSlice = createSlice({
   }
 });
 
-export const { resetClientErrors } = clientSlice.actions;
+export const { resetClientErrors, resetClientPage } = clientSlice.actions;
 export default clientSlice.reducer;

@@ -5,7 +5,9 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getClient } from '../../../store/client/clientSlice';
+import { getClient, resetClientPage } from '../../../store/client/clientSlice';
+import { green, purple } from '@mui/material/colors';
+
 
 export const СlientPage = () => {
 
@@ -18,7 +20,21 @@ export const СlientPage = () => {
     dispatch(getClient(id));
   }, [dispatch, id]);
 
-  const mdTheme = createTheme();
+  const mdTheme = createTheme({
+    palette: {
+      primary: {
+        main: '#d32f2f',
+      },
+      secondary: {
+        main: green[500],
+      },
+    },
+  });
+
+  const handleClickBack = () => {
+    navigate(-1)
+    dispatch(resetClientPage())
+  }
 
   return (
     <>
@@ -42,7 +58,7 @@ export const СlientPage = () => {
               <Toolbar />
               <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Button
-                  onClick={() => navigate(-1)}
+                  onClick={handleClickBack}
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >

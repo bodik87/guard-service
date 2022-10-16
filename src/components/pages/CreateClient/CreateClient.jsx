@@ -43,7 +43,7 @@ function DashboardContent() {
   }, [dispatch, isCar]);
 
 
-  const handleCreateClient = React.useCallback((event) => {
+  const handleCreateClient = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const formData = {
@@ -55,12 +55,13 @@ function DashboardContent() {
       carPlateNumber: data.get('carPlateNumber'),
       deposit: data.get('deposit'),
     };
+
     dispatch(createClient(formData)).then((res) => {
       if (!res.error) {
         navigate(`${paths.client}/${res.payload.id}`, { replace: true });
       }
-    });
-  }, [dispatch]);
+    })
+  }
 
   // const handleCreateClient = useCallback(() => {
   //   const formData = new FormData();
