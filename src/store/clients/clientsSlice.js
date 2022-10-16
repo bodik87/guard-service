@@ -24,13 +24,13 @@ const clientsSlice = createSlice({
       })
       .addCase(getClients.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.planes = action.payload;
+        state.clients = action.payload;
       })
       .addCase(getClients.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.message = action.payload.message;
-        state.planes = null;
+        state.clients = null;
       })
   }
 });
