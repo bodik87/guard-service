@@ -13,7 +13,8 @@ import Link from '@mui/material/Link';
 import { useDispatch, useSelector } from 'react-redux';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { getClients } from '../../../store/clients/clientsSlice';
-import { Avatar, Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Avatar, Button, Checkbox, FormControlLabel, InputLabel, TextField } from '@mui/material';
+import Adress from '../../Adress/Adress';
 
 function Copyright(props) {
   return (
@@ -44,10 +45,15 @@ function DashboardContent() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      clientName: data.get('clientName'),
       email: data.get('email'),
-      password: data.get('password'),
     });
   };
+
+  const [isCar, setIsCar] = React.useState(true)
+  const handleIsCar = (event) => {
+    setIsCar(!isCar)
+  }
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -68,61 +74,100 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Box
-                    sx={{
-                      marginTop: 8,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+                  <PersonAddIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Створити користувача
+                </Typography>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="clientName"
+                    label="ПIБ"
+                    type="text"
+                    id="clientName"
+                    autoFocus
+                  />
+
+                  <Adress />
+
+                  <div>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          value="isCar"
+                          color="primary"
+                          checked={isCar}
+                          onChange={handleIsCar}
+                        />
+                      }
+                      label="Наявнiсть авто"
+                    />
+
+                    {
+                      isCar && <TextField
+                        margin="normal"
+                        fullWidth
+                        name="carPlateNumber"
+                        label="Номер авто"
+                        type="text"
+                        id="carPlateNumber"
+                      />
+                    }
+
+
+                  </div>
+
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="phoneNumber"
+                    label="Номер телефону"
+                    type="phone"
+                    id="phoneNumber"
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="deposit"
+                    label="Залишок коштiв"
+                    id="deposit"
+                  />
+
+                  <Button
+                    type="submit"
+                    // onClick={handleSubmit}
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
                   >
-                    <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-                      <PersonAddIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                      Створити користувача
-                    </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                      <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                      />
-                      <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                      />
-                      <FormControlLabel
-                        control={<Checkbox value="isCar" color="primary" />}
-                        label="Наявнiсть авто"
-                      />
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                      >
-                        Sign In
-                      </Button>
-                    </Box>
-                  </Box>
-                </Paper>
-              </Grid>
-            </Grid>
+                    Створити
+                  </Button>
+                </Box>
+              </Box>
+            </Paper>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
