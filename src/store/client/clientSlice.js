@@ -17,6 +17,14 @@ export const createClient = createAsyncThunk('CREATE_CLIENT', async (clientData,
   }
 });
 
+export const deleteClient = createAsyncThunk('DELETE_CLIENT', async (id, thunkAPI) => {
+  try {
+    return await clientsService.deleteClient(id);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data)
+  }
+});
+
 const clientSlice = createSlice({
   name: 'client',
   initialState: {
@@ -58,6 +66,20 @@ const clientSlice = createSlice({
         state.errors = null;
       })
       .addCase(createClient.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.errors = action.payload;
+      })
+      .addCase(deleteClient.pending, (state) => {
+        state.isLoading = true;
+        state.errors = null; // обнуляем ошибки перед отправкой запроса
+      })
+      .addCase(deleteClient.fulfilled, (state) => {
+        state.isLoading = false;
+        state.errors = null;
+        state.client = null;
+      })
+      .addCase(deleteClient.rejected, (state, action) => {
         state.isError = true;
         state.isLoading = false;
         state.errors = action.payload;

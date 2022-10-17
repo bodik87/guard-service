@@ -17,10 +17,16 @@ const createClient = async (clientData) => {
   return clients.data;
 }
 
+const deleteClient = async (id) => {
+  const clients = await axios.delete(`${API_URL}/clients/${id}`);
+  return clients.data;
+}
+
 const clientsService = {
   getClients,
   getClient,
-  createClient
+  createClient,
+  deleteClient
 }
 
 export default clientsService;

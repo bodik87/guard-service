@@ -1,12 +1,14 @@
 import { Copyright } from '@mui/icons-material';
-import { Button, CssBaseline, Paper, Toolbar } from '@mui/material';
+import { Button, CircularProgress, CssBaseline, Paper, Toolbar } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getClient, resetClientPage } from '../../../store/client/clientSlice';
-import { green, purple } from '@mui/material/colors';
+import { deleteClient, getClient, resetClientPage } from '../../../store/client/clientSlice';
+import { green } from '@mui/material/colors';
+import EditIcon from '@mui/icons-material/Edit';
+import { paths } from '../../../paths';
 
 
 export const СlientPage = () => {
@@ -36,6 +38,14 @@ export const СlientPage = () => {
     dispatch(resetClientPage())
   }
 
+  const handleClickDelete = () => {
+    dispatch(deleteClient(id)).then(res => {
+      if (!res.error) {
+        navigate(paths.home);
+      }
+    })
+  }
+
   return (
     <>
       {
@@ -57,16 +67,29 @@ export const СlientPage = () => {
             >
               <Toolbar />
               <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                <Button
-                  onClick={handleClickBack}
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Назад
-                </Button>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  {client.clientName}
-                </Paper>
+                {
+                  isLoading ?
+                    <CircularProgress /> :
+                    <>
+                      <Button
+                        onClick={handleClickBack}
+                        sx={{ mt: 3, mb: 2 }}
+                      >
+                        На головну
+                      </Button>
+                      <Paper sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
+                        {client.clientName}
+                        <EditIcon style={{ cursor: 'pointer' }} />
+                      </Paper>
+                      <Button
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                        onClick={handleClickDelete}
+                      >
+                        Видалити користувача
+                      </Button>
+                    </>
+                }
                 <Copyright sx={{ pt: 4 }} />
               </Container>
             </Box>
