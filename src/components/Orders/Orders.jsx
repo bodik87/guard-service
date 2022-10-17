@@ -6,7 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from '../Title/Title';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
 import { paths } from '../../paths';
 
 // Generate Order Data
@@ -41,21 +42,24 @@ export default function Orders({ clients }) {
             <TableCell>Адреса</TableCell>
             <TableCell>Телефон</TableCell>
             <TableCell>Номер авто</TableCell>
-            <TableCell align="right">Депозит</TableCell>
+            <TableCell>Депозит</TableCell>
+            <TableCell align="right">Редагувати</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {clients.map((client) => (
             <TableRow
               key={client.id}
-              style={{ cursor: 'pointer' }}
-              onClick={() => navigate(`${paths.client}/${client.id}`)}
             >
               <TableCell>{client.clientName}</TableCell>
               <TableCell>{`${client.street} ${client.house}, кв.${client.apartment}`}</TableCell>
               <TableCell>{client.phoneNumber}</TableCell>
               <TableCell>{client.carPlateNumber ? client.carPlateNumber : '-'}</TableCell>
-              <TableCell align="right">{`${client.deposit} грн`}</TableCell>
+              <TableCell>{`${client.deposit} грн`}</TableCell>
+              <TableCell align="right"><EditIcon
+                style={{ cursor: 'pointer' }}
+                onClick={() => navigate(`${paths.client}/${client.id}`)}
+              /></TableCell>
             </TableRow>
           ))}
         </TableBody>
