@@ -12,6 +12,10 @@ import Orders from '../../Orders/Orders';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClients } from '../../../store/clients/clientsSlice';
 import { CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import RangeSlider from '../../Slider/Slider';
+import { useFilterZeroDeposite } from '../../../hooks/useFilterZeroDeposite';
+import { useFilterNegativeDeposite } from '../../../hooks/useFilterNegativeDeposite';
+import { useFilterWithoutCar } from '../../../hooks/useFilterWithoutCar';
 
 function Copyright(props) {
   return (
@@ -30,16 +34,55 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
 
-  const dispatch = useDispatch();
   const { clients, isLoading } = useSelector(state => state.clients);
+  const dispatch = useDispatch();
+  const [displayedСlients, setDisplayedСlients] = React.useState(clients || [])
+  const { filteredZeroDeposites } = useFilterZeroDeposite(clients || [])
+  const { filteredNegativeDeposites } = useFilterNegativeDeposite(clients || [])
+  const { filteredWithoutCar } = useFilterWithoutCar(clients || [])
 
   React.useEffect(() => {
     dispatch(getClients());
   }, [dispatch]);
 
+  React.useEffect(() => {
+    setDisplayedСlients(clients);
+  }, [clients]);
+
+
+
+  ////////////
+  const [searchingQuery, setSearchingQuery] = React.useState('')
+  const filteredClients = displayedСlients && displayedСlients.filter(client => {
+    const searchingData = client.clientName + (client.phoneNumber ? client.phoneNumber : '')
+    return searchingData.includes(searchingQuery)
+  })
+
+  const handlerSearchingQuery = (e) => {
+    setSearchingQuery(e.target.value)
+    setDisplayedСlients(filteredClients)
+  }
+
+  // const debouncedInput = useDebounce(updateSelectedCategoryPractice, 500)
+
+  // const handleChangePracticeText = (e) => {
+  //   handlerSearchingQuery(e.target.value)
+  //   debouncedInput(e)
+  // }
+
+
+  console.log(filteredClients);
+
+  //////////////
   const [sort, setSort] = React.useState('');
+
+  // filtering
   const handleSort = (event) => {
     setSort(event.target.value)
+    if (event.target.value === 'zeroDeposite') setDisplayedСlients(filteredZeroDeposites)
+    if (event.target.value === 'negativeDeposite') setDisplayedСlients(filteredNegativeDeposites)
+    if (event.target.value === 'withoutCar') setDisplayedСlients(filteredWithoutCar)
+    if (event.target.value === 'resetFilter') setDisplayedСlients(clients)
   }
 
   return (
@@ -66,8 +109,10 @@ function DashboardContent() {
                   <TextField
                     sx={{ minWidth: 300 }}
                     id="outlined-basic"
-                    label="Пошук"
+                    label="Пошук за ПIБ або телефоном"
                     variant="outlined"
+                    value={searchingQuery}
+                    onChange={handlerSearchingQuery}
                   />
                   <FormControl sx={{ ml: 2, minWidth: 200 }}>
                     <InputLabel id="sort">Сортування</InputLabel>
@@ -79,15 +124,16 @@ function DashboardContent() {
                       label="Сортування"
                       onChange={handleSort}
                     >
-                      <MenuItem value={'Депозит 0'}>Депозит 0</MenuItem>
-                      <MenuItem value={'Заборгованiсть'}>Заборгованiсть</MenuItem>
-                      <MenuItem value={'Без авто'}>Без авто</MenuItem>
-                      <MenuItem value={'Вiдмiнити сортування'}>Вiдмiнити сортування</MenuItem>
+                      <MenuItem value={'zeroDeposite'}>Депозит 0</MenuItem>
+                      <MenuItem value={'negativeDeposite'}>Заборгованiсть</MenuItem>
+                      <MenuItem value={'withoutCar'}>Без авто</MenuItem>
+                      <MenuItem value={'resetFilter'}>Вiдмiнити сортування</MenuItem>
                     </Select>
                   </FormControl>
+                  <RangeSlider />
                 </Paper>
                 {isLoading ? <CircularProgress /> : <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  {clients && <Orders clients={clients} />}
+                  {displayedСlients && <Orders clients={displayedСlients} />}
                 </Paper>}
               </Grid>
             </Grid>
