@@ -36,12 +36,6 @@ function DashboardContent() {
   const [isCar, setIsCar] = React.useState(true)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { clients, isLoading } = useSelector(state => state.clients);
-
-  React.useEffect(() => {
-    dispatch(getClients());
-  }, [dispatch, isCar]);
-
 
   const handleCreateClient = (event) => {
     event.preventDefault();
@@ -103,7 +97,7 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <Paper sx={{ p: 2, pb: 8, display: 'flex', flexDirection: 'column' }}>
               <Box
                 sx={{
                   display: 'flex',

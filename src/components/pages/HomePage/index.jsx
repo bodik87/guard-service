@@ -9,13 +9,14 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import Orders from '../../Orders/Orders';
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useDispatch, useSelector } from 'react-redux';
 import { getClients } from '../../../store/clients/clientsSlice';
-import { CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import RangeSlider from '../../Slider/Slider';
+import { Badge, Button, CircularProgress, FormControl, FormHelperText, IconButton, InputLabel, MenuItem, Select, Slider, TextField } from '@mui/material';
 import { useFilterZeroDeposite } from '../../../hooks/useFilterZeroDeposite';
 import { useFilterNegativeDeposite } from '../../../hooks/useFilterNegativeDeposite';
 import { useFilterWithoutCar } from '../../../hooks/useFilterWithoutCar';
+import { useFilterRangeDeposite } from '../../../hooks/useFilterRangeDeposite';
 
 function Copyright(props) {
   return (
@@ -36,10 +37,40 @@ function DashboardContent() {
 
   const { clients, isLoading } = useSelector(state => state.clients);
   const dispatch = useDispatch();
+
   const [displayedСlients, setDisplayedСlients] = React.useState(clients || [])
+  const [sort, setSort] = React.useState('');
+
+  const [range, setRange] = React.useState([0, 1000])
+  const handlerRange = (e) => {
+    setRange(e.target.value)
+    // setDisplayedСlients(filteredRangeDeposites)
+  }
+
+  // Select
   const { filteredZeroDeposites } = useFilterZeroDeposite(clients || [])
   const { filteredNegativeDeposites } = useFilterNegativeDeposite(clients || [])
   const { filteredWithoutCar } = useFilterWithoutCar(clients || [])
+  const { filteredRangeDeposites } = useFilterRangeDeposite(clients || [], range || [])
+
+  const handlerRangeFilter = () => {
+    setDisplayedСlients(filteredRangeDeposites)
+  }
+
+  const [searchQuery, setSearchQuery] = React.useState('')
+  const handlerSearchQuery = (e) => setSearchQuery(e.target.value)
+
+  const filteredClients = displayedСlients && displayedСlients.filter(client =>
+    client.clientName.toLowerCase().trim().includes(searchQuery.toLowerCase().trim()));
+
+
+  const handleSort = (event) => {
+    setSort(event.target.value)
+    if (event.target.value === 'zeroDeposite') setDisplayedСlients(filteredZeroDeposites)
+    if (event.target.value === 'negativeDeposite') setDisplayedСlients(filteredNegativeDeposites)
+    if (event.target.value === 'withoutCar') setDisplayedСlients(filteredWithoutCar)
+    if (event.target.value === 'resetFilter') setDisplayedСlients(clients)
+  }
 
   React.useEffect(() => {
     dispatch(getClients());
@@ -49,41 +80,26 @@ function DashboardContent() {
     setDisplayedСlients(clients);
   }, [clients]);
 
+  // React.useEffect(() => {
+  //   setRange(range);
+  // }, []);
 
-
-  ////////////
-  const [searchingQuery, setSearchingQuery] = React.useState('')
-  const filteredClients = displayedСlients && displayedСlients.filter(client => {
-    const searchingData = client.clientName + (client.phoneNumber ? client.phoneNumber : '')
-    return searchingData.includes(searchingQuery)
-  })
-
-  const handlerSearchingQuery = (e) => {
-    setSearchingQuery(e.target.value)
-    setDisplayedСlients(filteredClients)
-  }
-
-  // const debouncedInput = useDebounce(updateSelectedCategoryPractice, 500)
-
-  // const handleChangePracticeText = (e) => {
-  //   handlerSearchingQuery(e.target.value)
-  //   debouncedInput(e)
+  // const searchClients = (searchQuery, clientsArray) => {
+  //   if (!searchQuery) return clientsArray
+  //   else return clientsArray.filter(client =>
+  //     client.clientName.toLowerCase().trim().includes(searchQuery.toLowerCase().trim()))
   // }
 
+  // React.useEffect(() => {
+  //   const debounce = setTimeout(() => {
+  //     const filteredClients = searchClients(searchText, displayedСlients);
+  //     setDisplayedСlients(filteredClients)
+  //   }, 500);
+  //   return () => clearTimeout(debounce)
+  // }, [displayedСlients])
 
-  console.log(filteredClients);
 
-  //////////////
-  const [sort, setSort] = React.useState('');
 
-  // filtering
-  const handleSort = (event) => {
-    setSort(event.target.value)
-    if (event.target.value === 'zeroDeposite') setDisplayedСlients(filteredZeroDeposites)
-    if (event.target.value === 'negativeDeposite') setDisplayedСlients(filteredNegativeDeposites)
-    if (event.target.value === 'withoutCar') setDisplayedСlients(filteredWithoutCar)
-    if (event.target.value === 'resetFilter') setDisplayedСlients(clients)
-  }
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -105,16 +121,19 @@ function DashboardContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', mb: 4 }}>
+                <Paper sx={{
+                  p: 2, mb: 4,
+                  display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center', alignItems: 'center',
+                }}>
                   <TextField
                     sx={{ minWidth: 300 }}
                     id="outlined-basic"
                     label="Пошук за ПIБ або телефоном"
                     variant="outlined"
-                    value={searchingQuery}
-                    onChange={handlerSearchingQuery}
+                    value={searchQuery}
+                    onChange={handlerSearchQuery}
                   />
-                  <FormControl sx={{ ml: 2, minWidth: 200 }}>
+                  <FormControl sx={{ minWidth: 200 }}>
                     <InputLabel id="sort">Сортування</InputLabel>
                     <Select
                       labelId="street"
@@ -130,10 +149,53 @@ function DashboardContent() {
                       <MenuItem value={'resetFilter'}>Вiдмiнити сортування</MenuItem>
                     </Select>
                   </FormControl>
-                  <RangeSlider />
+                  <Box sx={{ width: 400, display: 'flex', mr: 4, ml: 2 }}>
+                    <Box sx={{
+                      width: 300, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column',
+                    }}>
+                      <FormHelperText id="component-helper-text">
+                        {`Фiльтр депозиту вiд: ${range[0]} до ${range[1]} грн`}
+                      </FormHelperText>
+                      <Slider
+                        getAriaLabel={() => ''}
+                        value={range}
+                        onChange={handlerRange}
+                        valueLabelDisplay="auto"
+                        // getAriaValueText={valuetext}
+                        defaultValue={200}
+                        step={50}
+                        name={'rangeSlider'}
+                        marks
+                        min={0}
+                        max={1500}
+                      />
+                    </Box>
+                    <Button
+                      onClick={handlerRangeFilter}
+                      variant="contained"
+                      sx={{ ml: 4 }}
+                    >
+                      Сортувати
+                    </Button>
+                  </Box>
+
+                  <Box sx={{
+                    display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column',
+                  }}>
+                    <IconButton
+                      color="primary"
+                      onClick={() => setDisplayedСlients(filteredNegativeDeposites)}
+                    >
+                      <Badge badgeContent={filteredNegativeDeposites.length} color="warning">
+                        <NotificationsIcon />
+                      </Badge>
+                    </IconButton>
+                    <FormHelperText>{`Заборгованостi`}</FormHelperText>
+                  </Box>
+
                 </Paper>
                 {isLoading ? <CircularProgress /> : <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  {displayedСlients && <Orders clients={displayedСlients} />}
+                  {filteredClients && <Orders clients={filteredClients} />}
                 </Paper>}
               </Grid>
             </Grid>

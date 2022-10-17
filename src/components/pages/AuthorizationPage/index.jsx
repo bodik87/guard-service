@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { paths } from '../../../paths';
 import { Link as RouterLink } from 'react-router-dom';
+import { Paper, Toolbar } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -28,7 +29,7 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+const mdTheme = createTheme();
 
 export default function AuthorizationPage() {
   const handleSubmit = (event) => {
@@ -41,74 +42,92 @@ export default function AuthorizationPage() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+    <ThemeProvider theme={mdTheme}>
+      <Box sx={{ display: 'flex' }}>
         <CssBaseline />
+
         <Box
+          component="main"
           sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Вхiд
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Пароль"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Запам'ятати мене"
-            />
-            <RouterLink to={paths.home}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Paper sx={{ p: 4, pb: 6, display: 'flex', flexDirection: 'column' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
               >
-                Вхiд
-              </Button>
-            </RouterLink>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Забули пароль?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Реєстрацiя"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
+                <Avatar sx={{ m: 1, mt: 4, bgcolor: 'secondary.main' }}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Вхiд
+                </Typography>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Пароль"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                  />
+                  <FormControlLabel
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Запам'ятати мене"
+                  />
+                  <RouterLink to={paths.home}>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2 }}
+                    >
+                      Вхiд
+                    </Button>
+                  </RouterLink>
+                  <Grid container>
+                    <Grid item xs>
+                      <Link href="#" variant="body2">
+                        Забули пароль?
+                      </Link>
+                    </Grid>
+                    <Grid item>
+                      <Link href="#" variant="body2">
+                        {"Реєстрацiя"}
+                      </Link>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Box>
+            </Paper>
+            <Copyright sx={{ pt: 4 }} />
+          </Container>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+      </Box>
+    </ThemeProvider >
   );
 }
