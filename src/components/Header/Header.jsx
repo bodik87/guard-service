@@ -1,3 +1,7 @@
+import * as React from "react";
+import { mainListItems, secondaryListItems } from "../ListItems/ListItems";
+import { Box, CssBaseline } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -5,12 +9,8 @@ import Typography from "@mui/material/Typography";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
-import { mainListItems, secondaryListItems } from "../ListItems/ListItems";
-import * as React from "react";
-import { styled } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
-import { Box, CssBaseline } from "@mui/material";
 
 function Header({ children }) {
 
@@ -68,20 +68,13 @@ function Header({ children }) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="absolute" open={open}>
-        <Toolbar
-          sx={{
-            pr: '24px', // keep right padding when drawer closed
-          }}
-        >
+        <Toolbar sx={{ pr: '24px' }} >
           <IconButton
             edge="start"
             color="inherit"
             aria-label="open drawer"
             onClick={toggleDrawer}
-            sx={{
-              marginRight: '36px',
-              ...(open && { display: 'none' }),
-            }}
+            sx={{ marginRight: '36px', ...(open && { display: 'none' }) }}
           >
             <MenuIcon />
           </IconButton>
@@ -91,9 +84,7 @@ function Header({ children }) {
             color="inherit"
             noWrap
             sx={{ flexGrow: 1 }}
-          >
-            МОЯ ОХОРОНА
-          </Typography>
+          > МОЯ ОХОРОНА </Typography>
         </Toolbar>
       </AppBar>
 
@@ -103,8 +94,7 @@ function Header({ children }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            px: [1],
-            // bgcolor: 'warning.main'
+            px: [1]
           }}
         >
           <IconButton onClick={toggleDrawer}>

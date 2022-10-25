@@ -1,5 +1,10 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createClient } from '../../../store/client/clientSlice';
+import { paths } from '../../../paths';
+import Adress from '../../Adress/Adress'
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,14 +12,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
-import { useDispatch, useSelector } from 'react-redux';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { getClients } from '../../../store/clients/clientsSlice';
 import { Avatar, Button, Checkbox, CircularProgress, FormControlLabel, TextField } from '@mui/material';
-import Adress from '../../Adress/Adress'
-import { useNavigate } from 'react-router-dom';
-import { paths } from '../../../paths';
-import { createClient } from '../../../store/client/clientSlice';
 
 function Copyright(props) {
   return (
@@ -59,24 +58,7 @@ function DashboardContent() {
     })
   }
 
-  // const handleCreateClient = useCallback(() => {
-  //   const formData = new FormData();
-  //   formData.append('clientName', clientName);
-  //   formData.append('street', street);
-  //   formData.append('house', house);
-  //   formData.append('apartment', apartment);
-  //   formData.append('isCar', isCar);
-  //   formData.append('carPlateNumber', carPlateNumber);
-  //   formData.append('deposit', deposit);
-
-  //   dispatch(createClient(formData)).then((res) => {
-  //     if (!res.error) {
-  //       navigate(`${paths.client}/${res.payload._id}`, { replace: true });
-  //     }
-  //   });
-  // }, [clientName, street, house, apartment, isCar, carPlateNumber, deposit]);
-
-  const handleIsCar = (event) => {
+  const handleIsCar = () => {
     setIsCar(!isCar)
   }
 

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { paths } from '../../paths';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -7,8 +9,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Link } from 'react-router-dom';
-import { paths } from '../../paths';
 
 export const mainListItems = (
   <React.Fragment>
@@ -37,9 +37,7 @@ export const mainListItems = (
 export const secondaryListItems = (
   <React.Fragment>
 
-    <ListSubheader component="div" inset>
-      Iнше
-    </ListSubheader>
+    <ListSubheader component="div" inset>Iнше</ListSubheader>
 
     <Link to={paths.authorization}>
       <ListItemButton>

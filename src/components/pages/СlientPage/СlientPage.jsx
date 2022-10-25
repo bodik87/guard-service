@@ -1,14 +1,14 @@
-import { Copyright } from '@mui/icons-material';
-import { Button, CircularProgress, CssBaseline, Paper, Toolbar } from '@mui/material';
-import { Box, Container } from '@mui/system';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { deleteClient, getClient, resetClientPage } from '../../../store/client/clientSlice';
+import { paths } from '../../../paths';
+import { Copyright } from '@mui/icons-material';
+import { Button, CircularProgress, CssBaseline, Paper, Toolbar } from '@mui/material';
+import { Box, Container } from '@mui/system';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 import EditIcon from '@mui/icons-material/Edit';
-import { paths } from '../../../paths';
 
 
 export const СlientPage = () => {

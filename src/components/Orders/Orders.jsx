@@ -1,25 +1,16 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { paths } from '../../paths';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from '../Title/Title';
-import { useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
-import { paths } from '../../paths';
 
-// Generate Order Data
-// function createData(
-
-// ) {
-//   return { id, date, name, shipTo, paymentMethod, amount };
-// }
 
 export default function Orders({ clients }) {
-  function preventDefault(event) {
-    event.preventDefault();
-  }
   const navigate = useNavigate();
 
   const deposites = clients.map(client => client.deposit);
@@ -63,9 +54,6 @@ export default function Orders({ clients }) {
           ))}
         </TableBody>
       </Table>
-      {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        Link
-      </Link> */}
     </React.Fragment>
   );
 }

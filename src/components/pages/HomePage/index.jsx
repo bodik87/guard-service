@@ -1,4 +1,11 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getClients } from '../../../store/clients/clientsSlice';
+import Orders from '../../Orders/Orders';
+import { useFilterZeroDeposite } from '../../../hooks/useFilterZeroDeposite';
+import { useFilterNegativeDeposite } from '../../../hooks/useFilterNegativeDeposite';
+import { useFilterWithoutCar } from '../../../hooks/useFilterWithoutCar';
+import { useFilterRangeDeposite } from '../../../hooks/useFilterRangeDeposite';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -8,23 +15,14 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
-import Orders from '../../Orders/Orders';
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useDispatch, useSelector } from 'react-redux';
-import { getClients } from '../../../store/clients/clientsSlice';
 import { Badge, Button, CircularProgress, FormControl, FormHelperText, IconButton, InputLabel, MenuItem, Select, Slider, TextField } from '@mui/material';
-import { useFilterZeroDeposite } from '../../../hooks/useFilterZeroDeposite';
-import { useFilterNegativeDeposite } from '../../../hooks/useFilterNegativeDeposite';
-import { useFilterWithoutCar } from '../../../hooks/useFilterWithoutCar';
-import { useFilterRangeDeposite } from '../../../hooks/useFilterRangeDeposite';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
+      <Link color="inherit" href="https://mui.com/">Your Website</Link>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -79,27 +77,6 @@ function DashboardContent() {
   React.useEffect(() => {
     setDisplayedСlients(clients);
   }, [clients]);
-
-  // React.useEffect(() => {
-  //   setRange(range);
-  // }, []);
-
-  // const searchClients = (searchQuery, clientsArray) => {
-  //   if (!searchQuery) return clientsArray
-  //   else return clientsArray.filter(client =>
-  //     client.clientName.toLowerCase().trim().includes(searchQuery.toLowerCase().trim()))
-  // }
-
-  // React.useEffect(() => {
-  //   const debounce = setTimeout(() => {
-  //     const filteredClients = searchClients(searchText, displayedСlients);
-  //     setDisplayedСlients(filteredClients)
-  //   }, 500);
-  //   return () => clearTimeout(debounce)
-  // }, [displayedСlients])
-
-
-
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -195,7 +172,7 @@ function DashboardContent() {
 
                 </Paper>
                 {isLoading ? <CircularProgress /> : <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  {filteredClients && <Orders clients={filteredClients} />}
+                  {Array.isArray(filteredClients) && filteredClients.length > 0 ? <Orders clients={filteredClients} /> : 'Kористувачi вiдсутнi. Створiть нового'}
                 </Paper>}
               </Grid>
             </Grid>
